@@ -1,0 +1,10 @@
+<ul>
+    @for (fact of favorites$ | async; track fact.id) {
+        <li class="favorites-item">
+            <p class="favorites-item-text">
+                {{ fact.text }}
+            </p>
+            <button (click)="removeFavorite(fact.id)">Remove Favorite</button>
+        </li>
+    }
+</ul>
