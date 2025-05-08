@@ -21,6 +21,7 @@ export class SearchComponent {
 
   // TODO: add correct event type
   onSelect(event: any) {
+    debugger
     this.favoritesService.setSelectedFact(event?.target?.value)
   }
 }
