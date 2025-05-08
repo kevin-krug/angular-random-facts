@@ -1,20 +1,28 @@
 <div class="fact-text-wrapper">
     <p>
         @if (data$ | async; as factState) {
-        @switch (factState.state) {
-            @case ("loading") {
-            Loading...
+            @switch (factState.state) {
+                @case ("loading") {
+                    Loading...
+                }
+                @case ("error") {
+                    Error: {{ factState.error.message }}
+                }
+                @case ("loaded") {
+                    {{ factState.data.text }}
+                }
             }
-            @case ("error") {
-            Error: {{ factState.error.message }}
-            }
-            @case ("loaded") {
-            {{ factState.data.text }}
-            }
-        }
         }
     </p>
 </div>
+
 <div class="fact-ctas">
-    <button (click)="refetch()">Fetch New Fact</button>
+    <button (click)="refetchFact()">Fetch New Fact</button>
+
+    <!-- only show save button if fact sucessfully loaded  -->
+    @if (data$ | async; as factState) {
+        @if( factState.state === 'loaded') {
+        <button (click)="saveFact(factState.data)">Add Fact to Favorites</button>
+        }
+    }
 </div>

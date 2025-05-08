@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FactService, TFactState } from './services/fact.service';
+import { FactService, IFactData, TFactState } from './services/fact.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { FavoritesService } from '../favorites/services/favorites.service';
 
 @Component({
   selector: 'app-fact',
@@ -14,14 +15,19 @@ export class FactComponent  implements OnInit {
 
   constructor(
       private factService: FactService,
+      private favoritesService: FavoritesService
     ) {}
 
     ngOnInit() {
       this.fetchData()
     }
 
-    refetch() {
+    refetchFact() {
       this.fetchData() 
+    }
+
+    saveFact(fact: IFactData) {
+      this.favoritesService.add(fact)
     }
 
     private fetchData () {
