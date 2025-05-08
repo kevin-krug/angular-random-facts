@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { IFactData } from '../../fact/services/fact.service';
+import { FavoritesLocalStorageService } from './favorites-local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
   private favoritesSubject: BehaviorSubject<IFactData[]> = new BehaviorSubject([] as IFactData[]);
-  favorites$ = this.favoritesSubject.asObservable()
+  favorites$ = this.favoritesSubject.asObservable().pipe(
+    tap((favorites) => this.localStorageService.set(favorites))
+  )
 
-  constructor() {
+  constructor(private localStorageService: FavoritesLocalStorageService) {
+    const savedFavorites = this.localStorageService.get();
+    if( savedFavorites ){
+      this.favoritesSubject.next(savedFavorites);
+    }
   }
 
   add(newFavorite : IFactData) {
