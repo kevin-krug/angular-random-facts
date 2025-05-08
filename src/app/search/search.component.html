@@ -1,6 +1,6 @@
 <div class="search-favorites-wrapper">
   <label class="search-favorites-label" for="search-favorites-choice">Search a favorite fact:</label>
-  <input class="search-favorites-input" (input)="onSelect($event)" list="search-favorites" id="search-favorites-choice" name="search-favorites-choice" type="search"/>
+  <input class="search-favorites-input" (input)="setSearchFilter($event)" list="search-favorites" id="search-favorites-choice" name="search-favorites-choice" type="search"/>
 
   <datalist id="search-favorites">
     @for (fact of favorites$ | async; track fact.id) {

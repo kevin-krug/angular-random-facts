@@ -20,8 +20,7 @@ export class SearchComponent {
   }
 
   // TODO: add correct event type
-  onSelect(event: any) {
-    debugger
-    this.favoritesService.setSelectedFact(event?.target?.value)
+  setSearchFilter(event: any) {
+    this.favoritesService.setFilter(event?.target?.value)
   }
 }

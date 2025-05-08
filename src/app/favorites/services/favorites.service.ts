@@ -8,13 +8,12 @@ import { FavoritesLocalStorageService } from './favorites-local-storage.service'
 })
 export class FavoritesService {
   private favoritesSubject: BehaviorSubject<IFactData[]> = new BehaviorSubject([] as IFactData[]);
-  private selectedFactSubject = new BehaviorSubject<string | null>(null);
+  private searchFilterSubject = new BehaviorSubject<string | null>(null);
   
-
   favorites$ = this.favoritesSubject.asObservable().pipe(
     tap((favorites) => this.localStorageService.set(favorites))
   )
-  selectedFact$ = this.selectedFactSubject.asObservable();
+  searchFilter$ = this.searchFilterSubject.asObservable();
 
   constructor(private localStorageService: FavoritesLocalStorageService) {
     const savedFavorites = this.localStorageService.get();
@@ -31,11 +30,11 @@ export class FavoritesService {
     this.favoritesSubject.next(this.favoritesSubject.value.filter((favorite)=> favorite.id !== favoriteIdToRemove))
   }
 
-  setSelectedFact(text: string | null) {
-    this.selectedFactSubject.next(text);
+  setFilter(filterText: string | null) {
+    this.searchFilterSubject.next(filterText);
   }
 
-  clearSelectedFact() {
-    this.selectedFactSubject.next(null);
+  clearFilter() {
+    this.searchFilterSubject.next(null);
   }
 }

@@ -19,12 +19,12 @@ export class FavoritesComponent {
     this.filteredFavorites$ = combineLatest(
       [
         this.favoritesService.favorites$, 
-        this.favoritesService.selectedFact$
+        this.favoritesService.searchFilter$
       ]).pipe(
-        map(([favorites, selectedFact]) => {
-        if(selectedFact) {
+        map(([favorites, searchFilter]) => {
+        if(searchFilter) {
           // TODO: filter by Id
-          return favorites.filter(fact => fact.text === selectedFact)
+          return favorites.filter(fact => fact.text.toLowerCase().includes(searchFilter.toLowerCase()))
         }
         return favorites;
       })
