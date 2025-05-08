@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { IFactData } from '../../fact/services/fact.service';
 import { isPlatformBrowser } from '@angular/common';
+import { TFavoritesById } from './favorites.service';
 
 const FAVORITES_STORAGE_KEY = 'random-facts-app-favorites';
 
@@ -10,7 +10,7 @@ const FAVORITES_STORAGE_KEY = 'random-facts-app-favorites';
 export class FavoritesLocalStorageService {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
   
-  get(): IFactData[] | null {
+  get(): TFavoritesById | null {
     if (isPlatformBrowser(this.platformId)) {
       try {
         const serializedFavorites = localStorage.getItem(FAVORITES_STORAGE_KEY);
@@ -23,7 +23,7 @@ export class FavoritesLocalStorageService {
     return null;
   }
 
-  set(favorites: IFactData[]) {
+  set(favorites: TFavoritesById) {
     if (isPlatformBrowser(this.platformId)) {
       const serializedFavorites = JSON.stringify(favorites)
       localStorage.setItem(FAVORITES_STORAGE_KEY, serializedFavorites);

@@ -1,29 +1,42 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, map, tap } from 'rxjs';
 import { IFactData } from '../../fact/services/fact.service';
 import { FavoritesLocalStorageService } from './favorites-local-storage.service';
+
+export type TFavoritesById = Record<string, IFactData>
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
-  private favoritesSubject: BehaviorSubject<IFactData[]> = new BehaviorSubject([] as IFactData[]);
+  private favoritesByIdSubject: BehaviorSubject<TFavoritesById> = new BehaviorSubject({} as TFavoritesById);
   private searchFilterSubject = new BehaviorSubject<string | null>(null);
   
-  favorites$ = this.favoritesSubject.asObservable().pipe(
-    tap((favorites) => this.localStorageService.set(favorites))
+  favoritesById$ = this.favoritesByIdSubject.asObservable();
+  favoritesAsArray$ = this.favoritesByIdSubject.asObservable().pipe(
+    tap((favorites) => this.localStorageService.set(favorites)),
+    map((favorites) => Object.values(favorites))
   )
+
   searchFilter$ = this.searchFilterSubject.asObservable();
 
   constructor(private localStorageService: FavoritesLocalStorageService) {
     const savedFavorites = this.localStorageService.get();
     if( savedFavorites ){
-      this.favoritesSubject.next(savedFavorites);
+      this.favoritesByIdSubject.next(savedFavorites);
     }
   }
 
-  add(newFavorite : IFactData) {
-    this.favoritesSubject.next([...this.favoritesSubject.value, newFavorite]);
+  add(favoriteToAdd : IFactData) {
+    if(this.favoritesByIdSubject.value[favoriteToAdd.id]) {
+      console.warn('fact id already exists in favorites', favoriteToAdd.id);
+    }
+    this.favoritesByIdSubject.next({...this.favoritesByIdSubject.value, [favoriteToAdd.id]: favoriteToAdd});
+  }
+
+  remove(idToRemove: string) {
+    const { [idToRemove]: _favoriteToRemove, ...newFavorites } = this.favoritesByIdSubject.value;
+    this.favoritesByIdSubject.next(newFavorites)
   }
 
   remove(favoriteIdToRemove: string) {

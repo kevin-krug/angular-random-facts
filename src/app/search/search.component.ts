@@ -16,7 +16,7 @@ export class SearchComponent {
   constructor(
     private favoritesService: FavoritesService
   ) {
-    this.favorites$ = this.favoritesService.favorites$;
+    this.favorites$ = this.favoritesService.favoritesAsArray$;
   }
 
   // TODO: add correct event type
