@@ -33,4 +33,8 @@ export class FavoritesComponent {
   removeFavorite(id: string) {
     this.favoritesService.remove(id)
   }
+
+  clearAllFavorites() {
+    this.favoritesService.clearAll();
+  }
 }

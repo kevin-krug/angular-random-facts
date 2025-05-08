@@ -39,8 +39,9 @@ export class FavoritesService {
     this.favoritesByIdSubject.next(newFavorites)
   }
 
-  remove(favoriteIdToRemove: string) {
-    this.favoritesSubject.next(this.favoritesSubject.value.filter((favorite)=> favorite.id !== favoriteIdToRemove))
+  clearAll() {
+    this.favoritesByIdSubject.next({});
+    this.localStorageService.clear()
   }
 
   setFilter(filterText: string | null) {
