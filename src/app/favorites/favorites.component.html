@@ -1,5 +1,5 @@
 <ul>
-    @for (fact of favorites$ | async; track fact.id) {
+    @for (fact of filteredFavorites$ | async; track fact.id) {
         <li class="favorites-item">
             <p class="favorites-item-text">
                 {{ fact.text }}
