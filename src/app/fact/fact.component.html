@@ -1,15 +1,20 @@
-<p>
-    @if (data$ | async; as factState) {
-      @switch (factState.state) {
-        @case ("loading") {
-          Loading...
+<div class="fact-text-wrapper">
+    <p>
+        @if (data$ | async; as factState) {
+        @switch (factState.state) {
+            @case ("loading") {
+            Loading...
+            }
+            @case ("error") {
+            Error: {{ factState.error.message }}
+            }
+            @case ("loaded") {
+            {{ factState.data.text }}
+            }
         }
-        @case ("error") {
-          Error: {{ factState.error.message }}
         }
-        @case ("loaded") {
-          {{ factState.data.text }}
-        }
-      }
-    }
-  </p>
+    </p>
+</div>
+<div class="fact-ctas">
+    <button (click)="refetch()">Fetch New Fact</button>
+</div>

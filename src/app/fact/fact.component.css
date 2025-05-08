@@ -1,0 +1,11 @@
+.fact-text-wrapper {
+    min-height: 8rem;
+}
+
+.fact-ctas {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}

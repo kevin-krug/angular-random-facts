@@ -15,8 +15,16 @@ export class FactComponent  implements OnInit {
   constructor(
       private factService: FactService,
     ) {}
-  
+
     ngOnInit() {
+      this.fetchData()
+    }
+
+    refetch() {
+      this.fetchData() 
+    }
+
+    private fetchData () {
       this.data$ = this.factService.fetchFact();    
     }
 }
