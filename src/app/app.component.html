@@ -183,22 +183,8 @@
       <h1>{{ title }}</h1>
     </div>
     <div>
-      <p>
-        @if (data$ | async; as factState) {
-          @switch (factState.state) {
-            @case ("loading") {
-              Loading...
-            }
-            @case ("error") {
-              Error: {{ factState.error.message }}
-            }
-            @case ("loaded") {
-              {{ factState.data.text }}
-            }
-          }
-        }
-      </p>
-  </div>
+      <app-fact></app-fact>
+    </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
       <div class="pill-group">
