@@ -18,13 +18,11 @@
 
 <div class="fact-ctas">
     <button (click)="refetchFact()">Fetch New Fact</button>
-    @if (factWithFavorites$ | async; as factWithFavorites) {
-        @if (factWithFavorites.factData) {
-            <button
-            [disabled]="factWithFavorites.factState !== 'loaded' || factWithFavorites.favoriteIdAlreadyExists"
-            (click)="saveFact(factWithFavorites.factData)">
-            Add Fact to Favorites
-            </button>
-        }
-    }
+    <ng-container *ngIf="fact$ | async as fact">
+        <button
+            [disabled]="fact.factExistsAsFavorite || fact.factState !== 'loaded'"
+            (click)="saveFact(fact.factData)">
+        Add Fact to Favorites
+    </button>
+    </ng-container>
 </div>

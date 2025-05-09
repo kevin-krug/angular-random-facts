@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FactService, IFactData, TFactState } from './services/fact.service';
+import { FactService, IFactData } from './services/fact.service';
 import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { FavoritesService, TFavoritesById } from '../favorites/services/favorites.service';
+import { FavoritesService } from '../favorites/services/favorites.service';
 
-interface IFactWithFavorites {
+interface IFact {
   factState: string;
   factData: IFactData | null;
-  favoriteIdAlreadyExists: boolean;
+  factExistsAsFavorite: boolean;
 }
 
 @Component({
@@ -22,7 +22,7 @@ export class FactComponent  implements OnInit {
     switchMap(() => this.factService.fetchFact())
   );
 
-  factWithFavorites$!: Observable<IFactWithFavorites>
+  fact$!: Observable<IFact>
 
   constructor(
       private factService: FactService,
@@ -32,13 +32,13 @@ export class FactComponent  implements OnInit {
 
     ngOnInit() {
       this.fetchData();      
-      this.factWithFavorites$ = combineLatest([this.factState$, this.favoritesService.favoritesById$]).pipe(
+      this.fact$ = combineLatest([this.factState$, this.favoritesService.favoritesById$]).pipe(
         map(
           ([factState, favoritesById]) => {            
             return {
             factState: factState.state,
             factData: factState.state === "loaded" ? factState.data : null,
-            favoriteIdAlreadyExists: factState.state === "loaded" ? !!favoritesById?.[factState.data.id] : false
+            factExistsAsFavorite: factState.state === "loaded" ? !!favoritesById?.[factState.data.id] : false
           }}
         )
       );
@@ -48,9 +48,10 @@ export class FactComponent  implements OnInit {
       this.fetchData();
     }
 
-    saveFact(fact: IFactData) {
-      console.log('fact', fact)
-      this.favoritesService.add(fact)
+    saveFact(fact: IFactData | null) {
+      if(fact) {
+        this.favoritesService.add(fact)
+      } 
     }
 
     private fetchData () {
