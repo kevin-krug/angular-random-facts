@@ -18,11 +18,11 @@
 
 <div class="fact-ctas">
     <button (click)="refetchFact()">Fetch New Fact</button>
-
-    <!-- only show save button if fact sucessfully loaded  -->
     @if (data$ | async; as factState) {
-        @if( factState.state === 'loaded') {
-        <button (click)="saveFact(factState.data)">Add Fact to Favorites</button>
-        }
-    }
+        <button
+          [disabled]="factState.state !== 'loaded'"
+          (click)="saveFact(factState)">
+          Add Fact to Favorites
+        </button>
+      }
 </div>

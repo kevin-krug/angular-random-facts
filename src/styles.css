@@ -84,6 +84,12 @@ button:hover {
     background: color-mix(in srgb, var(--button-accent) 15%, transparent);
 }
 
+button:disabled {
+    cursor: not-allowed;
+    background: color-mix(in srgb, var(--gray-700) 10%, transparent);
+    color: var(--gray-400);
+}
+
 input[type="search"],
 input[list] {
     background: color-mix(in srgb, var(--button-accent) 5%, transparent);

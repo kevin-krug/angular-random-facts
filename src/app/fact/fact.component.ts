@@ -26,8 +26,10 @@ export class FactComponent  implements OnInit {
       this.fetchData() 
     }
 
-    saveFact(fact: IFactData) {
-      this.favoritesService.add(fact)
+    saveFact(factState: TFactState) {
+      if (factState.state === 'loaded') {
+        this.favoritesService.add(factState.data)
+      }
     }
 
     private fetchData () {
