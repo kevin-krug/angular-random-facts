@@ -14,10 +14,12 @@ import { CommonModule } from '@angular/common';
 import { FavoritesService } from '../favorites/services/favorites.service';
 import { LoaderComponent } from '../shared/loader/loader.component';
 import { ErrorComponent } from '../shared/error/error.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface IFact {
     factState: string;
     factData: IFactData | null;
+    factError: HttpErrorResponse | null;
     factExistsAsFavorite: boolean;
 }
 
@@ -42,7 +44,6 @@ export class FactComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.fetchData();
         this.fact$ = combineLatest([
             this.factState$,
             this.favoritesService.favoritesById$
@@ -52,6 +53,8 @@ export class FactComponent implements OnInit {
                     factState: factState.state,
                     factData:
                         factState.state === 'loaded' ? factState.data : null,
+                    factError:
+                        factState.state === 'error' ? factState.error : null,
                     factExistsAsFavorite:
                         factState.state === 'loaded'
                             ? !!favoritesById?.[factState.data.id]
