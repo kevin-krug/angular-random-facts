@@ -12,10 +12,15 @@ import { CommonModule } from '@angular/common';
 })
 export class FavoritesComponent {
   filteredFavorites$: Observable<IFactData[]>;;
+  hasFavorites$: Observable<boolean>;;
 
   constructor(
     private favoritesService: FavoritesService
   ) {
+    this.hasFavorites$ = this.favoritesService.favoritesAsArray$.pipe(
+      map(favoritesAsArray => !!favoritesAsArray.length)
+    );
+
     this.filteredFavorites$ = combineLatest(
       [
         this.favoritesService.favoritesAsArray$, 

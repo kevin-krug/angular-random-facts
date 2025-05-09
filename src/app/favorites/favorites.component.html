@@ -9,5 +9,5 @@
             </li>
         }
     </ul>
-    <button (click)="clearAllFavorites()">Clear All Favorites</button>
+    <button (click)="clearAllFavorites()" [disabled]="!(hasFavorites$ | async)">Clear All Favorites</button>
 </div>
