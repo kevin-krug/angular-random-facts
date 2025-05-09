@@ -1,15 +1,18 @@
 <div class="fact-text-wrapper">
-    @if (isLoading$ | async) {
-        <app-loader></app-loader>
-    }
     @if (factState$ | async; as factState) {
-        @if (factState.state === 'error') {
-            <app-error errorMessage="Error: {{ factState.error.message }}"></app-error>
-        } @else if (factState.state === 'loaded') {
-            <p>{{ factState.data.text }}</p>
+      @switch (factState.state) {
+        @case ('loading') {
+          <app-loader></app-loader>
         }
+        @case ('error') {
+          <app-error errorMessage="Error: {{ factState.error.message }}"></app-error>
+        }
+        @case ('loaded') {
+          <p>{{ factState.data.text }}</p>
+        }
+      }
     }
-</div>
+  </div>
 <div class="fact-ctas">
     <button (click)="refetchFact()">Fetch New Fact</button>
     <ng-container *ngIf="fact$ | async as fact">

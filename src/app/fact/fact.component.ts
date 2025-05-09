@@ -3,11 +3,12 @@ import { FactService, IFactData } from './services/fact.service';
 import {
     BehaviorSubject,
     combineLatest,
-    debounceTime,
-    distinctUntilChanged,
+    debounce,
     map,
     Observable,
-    switchMap
+    of,
+    switchMap,
+    timer
 } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FavoritesService } from '../favorites/services/favorites.service';
@@ -29,16 +30,11 @@ interface IFact {
 export class FactComponent implements OnInit {
     private fetchTrigger$ = new BehaviorSubject<void>(undefined);
     factState$ = this.fetchTrigger$.pipe(
-        switchMap(() => this.factService.fetchFact())
+        switchMap(() => this.factService.fetchFact()),
+        debounce((state) => (state.state === 'loading' ? timer(200) : of(0)))
     );
 
     fact$!: Observable<IFact>;
-
-    isLoading$ = this.factState$.pipe(
-        map((state) => state.state === 'loading'),
-        debounceTime(200),
-        distinctUntilChanged()
-    );
 
     constructor(
         private factService: FactService,
