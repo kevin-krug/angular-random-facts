@@ -8,7 +8,7 @@ const FAVORITES_STORAGE_KEY = 'random-facts-app-favorites';
   providedIn: 'root'
 })
 export class FavoritesLocalStorageService {
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
   
   get(): TFavoritesById | null {
     if (isPlatformBrowser(this.platformId)) {

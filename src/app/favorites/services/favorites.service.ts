@@ -1,5 +1,5 @@
-import { Injectable, OnInit } from '@angular/core';
-import { BehaviorSubject, debounceTime, map, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, map, tap } from 'rxjs';
 import { IFactData } from '../../fact/services/fact.service';
 import { FavoritesLocalStorageService } from './favorites-local-storage.service';
 
@@ -9,7 +9,7 @@ export type TFavoritesById = Record<string, IFactData>
   providedIn: 'root'
 })
 export class FavoritesService {
-  private favoritesByIdSubject: BehaviorSubject<TFavoritesById> = new BehaviorSubject({} as TFavoritesById);
+  private favoritesByIdSubject = new BehaviorSubject<TFavoritesById>({});
   private searchFilterSubject = new BehaviorSubject<string | null>(null);
   private loadingSubject = new BehaviorSubject<boolean>(true);
   favoritesLoading$ = this.loadingSubject.asObservable();

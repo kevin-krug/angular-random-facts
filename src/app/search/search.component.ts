@@ -21,8 +21,7 @@ export class SearchComponent implements OnInit{
     this.favorites$ = this.favoritesService.favoritesAsArray$;
   }
 
-  // TODO: add correct event type
-  setSearchFilter(event: any) {
-    this.favoritesService.setFilter(event?.target?.value)
+  setSearchFilter(event: InputEvent) {
+    this.favoritesService.setFilter((event?.target as HTMLInputElement).value)
   }
 }

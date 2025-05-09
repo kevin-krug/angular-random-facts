@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, startWith } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -14,7 +14,7 @@ export interface IFactData {
 
 export type TFactState =
   | { state: 'loading' }
-  | { state: 'error'; error: any }
+  | { state: 'error'; error: HttpErrorResponse }
   | { state: 'loaded'; data: IFactData };
 
 

@@ -1,5 +1,5 @@
 <div class="favorites-wrapper">
-    <button class="favorites-clear-button" (click)="clearAllFavorites()" [disabled]="!(hasFavorites$ | async)">Clear All Favorites</button>
+    <button class="favorites-clear-button" (click)="clearAllFavorites()" [disabled]="(hasFavorites$ | async)">Clear All Favorites</button>
     @if (favoritesLoading$ | async) {
         <app-loader></app-loader>
     }

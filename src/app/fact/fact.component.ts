@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FactService, IFactData, TFactState } from './services/fact.service';
+import { FactService, IFactData } from './services/fact.service';
 import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { FavoritesService, TFavoritesById } from '../favorites/services/favorites.service';
+import { FavoritesService } from '../favorites/services/favorites.service';
 import { LoaderComponent } from '../shared/loader/loader.component';
 import { ErrorComponent } from '../shared/error/error.component';
 
