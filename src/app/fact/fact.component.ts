@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FactService, IFactData } from './services/fact.service';
-import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
+import { FactService, IFactData, TFactState } from './services/fact.service';
+import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { FavoritesService } from '../favorites/services/favorites.service';
+import { FavoritesService, TFavoritesById } from '../favorites/services/favorites.service';
+import { LoaderComponent } from '../shared/loader/loader.component';
+import { ErrorComponent } from '../shared/error/error.component';
 
 interface IFact {
   factState: string;
@@ -12,7 +14,7 @@ interface IFact {
 
 @Component({
   selector: 'app-fact',
-  imports: [CommonModule],
+  imports: [CommonModule, LoaderComponent, ErrorComponent],
   templateUrl: './fact.component.html',
   styleUrl: './fact.component.css'
 })
@@ -23,6 +25,12 @@ export class FactComponent  implements OnInit {
   );
 
   fact$!: Observable<IFact>
+
+  isLoading$ = this.factState$.pipe(
+    map(state => state.state === 'loading'),
+    debounceTime(200),
+    distinctUntilChanged()
+  );
 
   constructor(
       private factService: FactService,
