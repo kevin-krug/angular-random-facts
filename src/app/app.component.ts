@@ -5,11 +5,11 @@ import { FavoritesComponent } from './favorites/favorites.component';
 import { SearchComponent } from './search/search.component';
 
 @Component({
-  selector: 'app-root',
-  imports: [RouterOutlet, FactComponent, FavoritesComponent, SearchComponent ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+    selector: 'app-root',
+    imports: [RouterOutlet, FactComponent, FavoritesComponent, SearchComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'random-facts-app';
+    title = 'random-facts-app';
 }
