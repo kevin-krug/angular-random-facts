@@ -1,6 +1,6 @@
 <div class="fact-text-wrapper">
     <p>
-        @if (data$ | async; as factState) {
+        @if (factState$ | async; as factState) {
             @switch (factState.state) {
                 @case ("loading") {
                     Loading...
@@ -18,11 +18,13 @@
 
 <div class="fact-ctas">
     <button (click)="refetchFact()">Fetch New Fact</button>
-    @if (data$ | async; as factState) {
-        <button
-          [disabled]="factState.state !== 'loaded'"
-          (click)="saveFact(factState)">
-          Add Fact to Favorites
-        </button>
-      }
+    @if (factWithFavorites$ | async; as factWithFavorites) {
+        @if (factWithFavorites.factData) {
+            <button
+            [disabled]="factWithFavorites.factState !== 'loaded' || factWithFavorites.favoriteIdAlreadyExists"
+            (click)="saveFact(factWithFavorites.factData)">
+            Add Fact to Favorites
+            </button>
+        }
+    }
 </div>
