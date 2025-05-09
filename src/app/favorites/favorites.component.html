@@ -1,11 +1,13 @@
-<ul>
-    @for (fact of filteredFavorites$ | async; track fact.id) {
-        <li class="favorites-item">
-            <p class="favorites-item-text">
-                {{ fact.text }}
-            </p>
-            <button (click)="removeFavorite(fact.id)">Remove Favorite</button>
-        </li>
-    }
-</ul>
-<button (click)="clearAllFavorites()">Clear All Favorites</button>
+<div class="favorites-wrapper">
+    <ul class="favorites-list">
+        @for (fact of filteredFavorites$ | async; track fact.id) {
+            <li class="favorites-item">
+                <p class="favorites-item-text">
+                    {{ fact.text }}
+                </p>
+                <button (click)="removeFavorite(fact.id)">Remove Favorite</button>
+            </li>
+        }
+    </ul>
+    <button (click)="clearAllFavorites()">Clear All Favorites</button>
+</div>

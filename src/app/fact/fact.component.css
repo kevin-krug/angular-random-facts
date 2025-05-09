@@ -1,5 +1,6 @@
 .fact-text-wrapper {
-    min-height: 8rem;
+    min-height: 10rem;
+    margin-bottom: 1rem;
 }
 
 .fact-ctas {

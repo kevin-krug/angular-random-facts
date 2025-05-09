@@ -1,7 +1,15 @@
+.favorites-wrapper {
+    padding: 1rem 0;
+}
+
+.favorites-list {
+    margin-bottom: 4rem
+}
+
 .favorites-item {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .favorites-item-text {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.625rem;
 }
