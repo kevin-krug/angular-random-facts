@@ -1,13 +1,18 @@
 <div class="favorites-wrapper">
-    <ul class="favorites-list">
-        @for (fact of filteredFavorites$ | async; track fact.id) {
-            <li class="favorites-item">
-                <p class="favorites-item-text">
-                    {{ fact.text }}
-                </p>
-                <button (click)="removeFavorite(fact.id)">Remove Favorite</button>
-            </li>
-        }
-    </ul>
-    <button (click)="clearAllFavorites()" [disabled]="!(hasFavorites$ | async)">Clear All Favorites</button>
+    <button class="favorites-clear-button" (click)="clearAllFavorites()" [disabled]="!(hasFavorites$ | async)">Clear All Favorites</button>
+    @if (favoritesLoading$ | async) {
+        <app-loader></app-loader>
+    }
+    @else if(hasFavorites$ | async){
+        <ul class="favorites-list">
+            @for (fact of filteredFavorites$ | async; track fact.id) {
+                <li class="favorites-item">
+                    <p class="favorites-item-text">
+                        {{ fact.text }}
+                    </p>
+                    <button (click)="removeFavorite(fact.id)">Remove Favorite</button>
+                </li>
+            }
+        </ul>
+    }
 </div>

@@ -1,22 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IFactData } from '../fact/services/fact.service';
 import { combineLatest, map, Observable } from 'rxjs';
 import { FavoritesService } from './services/favorites.service';
 import { CommonModule } from '@angular/common';
+import { LoaderComponent } from '../shared/loader/loader.component';
 
 @Component({
   selector: 'app-favorites',
-  imports: [CommonModule],
+  imports: [CommonModule, LoaderComponent],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.css'
 })
-export class FavoritesComponent {
-  filteredFavorites$: Observable<IFactData[]>;;
-  hasFavorites$: Observable<boolean>;;
+export class FavoritesComponent implements OnInit {
+  filteredFavorites$!: Observable<IFactData[]>;;
+  hasFavorites$!: Observable<boolean>;
+  favoritesLoading$!: Observable<boolean>;
 
   constructor(
     private favoritesService: FavoritesService
-  ) {
+  ) {}
+
+  ngOnInit() {
+    this.favoritesLoading$ = this.favoritesService.favoritesLoading$;
     this.hasFavorites$ = this.favoritesService.favoritesAsArray$.pipe(
       map(favoritesAsArray => !!favoritesAsArray.length)
     );

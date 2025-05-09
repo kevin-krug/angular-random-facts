@@ -1,5 +1,10 @@
 .favorites-wrapper {
+    min-height: 100rem;
     padding: 1rem 0;
+}
+
+.favorites-clear-button {
+    margin-bottom: 2rem;
 }
 
 .favorites-list {
