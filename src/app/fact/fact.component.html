@@ -1,3 +1,4 @@
+<!-- use ng-container to keep fact in scope, also due to @if and @switch compatibility -->
 <ng-container *ngIf="fact$ | async as fact">
     <div class="fact-text-wrapper">
       @switch (fact.factState) {
@@ -5,7 +6,7 @@
           <app-loader></app-loader>
         }
         @case ('error') {
-          <app-error errorMessage="Error: {{ fact.factError }}"></app-error>
+          <app-error errorMessage="Error: {{ fact.factError?.message }}"></app-error>
         }
         @case ('loaded') {
           <p>{{ fact.factData?.text }}</p>

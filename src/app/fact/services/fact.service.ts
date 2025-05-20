@@ -26,7 +26,7 @@ export class FactService {
     fetchFact(): Observable<TFactState> {
         return this.http.get<IFactData>(environment.apiUrlEndpoint).pipe(
             map((data) => ({ state: 'loaded', data }) as const),
-            catchError((error) => of({ state: 'error', error } as const)),
+            catchError((error) => of({ state: 'error', error } as const)), // return observable to resume stream
             startWith({ state: 'loading' } as const)
         );
     }

@@ -19,6 +19,14 @@ export class FavoritesService {
         tap((favorites) => this.localStorageService.set(favorites)),
         map((favorites) => Object.values(favorites))
     );
+    // refactor suggestion if using signals
+    // readonly favoritesAsArray = computed(() =>
+    //     Object.values(this.favoritesById())
+    // );
+    // effect(() => {
+    //     const favorites = this.favoritesById();
+    //     this.localStorageService.set(favorites);
+    // });
 
     searchFilter$ = this.searchFilterSubject.asObservable();
 

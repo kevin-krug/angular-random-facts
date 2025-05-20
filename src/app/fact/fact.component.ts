@@ -33,6 +33,7 @@ export class FactComponent implements OnInit {
     private fetchTrigger$ = new BehaviorSubject<void>(undefined);
     factState$ = this.fetchTrigger$.pipe(
         switchMap(() => this.factService.fetchFact()),
+        // wait 200ms before emitting loading state
         debounce((state) => (state.state === 'loading' ? timer(200) : of(0)))
     );
 
