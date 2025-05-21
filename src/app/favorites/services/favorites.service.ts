@@ -11,6 +11,11 @@ export type TFavoritesById = Record<string, IFactData>;
 export class FavoritesService {
     private favoritesByIdSubject = new BehaviorSubject<TFavoritesById>({});
     private searchFilterSubject = new BehaviorSubject<string | null>(null);
+    // debonce
+    //     .pipe(
+    //   debounceTime(300),
+    //   distinctUntilChanged()
+    // );
     private loadingSubject = new BehaviorSubject<boolean>(true);
     favoritesLoading$ = this.loadingSubject.asObservable();
 

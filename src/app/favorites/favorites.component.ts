@@ -30,6 +30,15 @@ export class FavoritesComponent implements OnInit {
         ]).pipe(
             map(([favorites, searchFilter]) => {
                 if (searchFilter) {
+                    // fuzzy search
+                    // const fuse = new Fuse(this.favorites, {
+                    //     keys: ['text'],
+                    //     threshold: 0.4  // tune sensitivity (lower -> stricter)
+                    //   });
+
+                    // const results = fuse.search(searchFilter);
+                    // return results.map(result => result.item);
+
                     return favorites.filter((fact) =>
                         fact.text
                             .toLowerCase()
