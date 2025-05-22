@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FactService, IFactData, State } from './services/fact.service';
+import {
+    FactService,
+    IFactData,
+    State,
+    TFactState
+} from './services/fact.service';
 import {
     BehaviorSubject,
     combineLatest,
@@ -11,7 +16,10 @@ import {
     timer
 } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { FavoritesService } from '../favorites/services/favorites.service';
+import {
+    FavoritesService,
+    TFavoritesById
+} from '../favorites/services/favorites.service';
 import { LoaderComponent } from '../shared/loader/loader.component';
 import { ErrorComponent } from '../shared/error/error.component';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -22,6 +30,39 @@ interface IFact {
     factError: HttpErrorResponse | null;
     factExistsAsFavorite: boolean;
 }
+
+type FactStateStrategy = (
+    factState: TFactState,
+    favoritesById: TFavoritesById
+) => IFact;
+
+// extract subset from union type
+type TFactStateOf<S extends State> = Extract<TFactState, { state: S }>;
+
+const factStateStrategies: Record<State, FactStateStrategy> = {
+    [State.loaded]: (factState, favoritesById) => ({
+        factState: State.loaded,
+        factData: (factState as TFactStateOf<State.loaded>).data ?? null,
+        factError: null,
+        factExistsAsFavorite:
+            !!favoritesById?.[
+                (factState as TFactStateOf<State.loaded>).data!.id
+            ]
+    }),
+    [State.error]: (factState) => ({
+        factState: State.error,
+        factData: null,
+        factError: (factState as TFactStateOf<State.error>).error,
+        factExistsAsFavorite: false
+    }),
+
+    [State.loading]: () => ({
+        factState: State.loading,
+        factData: null,
+        factError: null,
+        factExistsAsFavorite: false
+    })
+};
 
 @Component({
     selector: 'app-fact',
@@ -53,21 +94,10 @@ export class FactComponent implements OnInit {
             this.favoritesService.favoritesById$
         ]).pipe(
             map(([factState, favoritesById]) => {
-                return {
-                    factState: factState.state,
-                    factData:
-                        factState.state === State.loaded
-                            ? factState.data
-                            : null,
-                    factError:
-                        factState.state === State.error
-                            ? factState.error
-                            : null,
-                    factExistsAsFavorite:
-                        factState.state === State.loaded
-                            ? !!favoritesById?.[factState.data.id]
-                            : false
-                };
+                return factStateStrategies[factState.state](
+                    factState,
+                    favoritesById
+                );
             })
         );
     }
