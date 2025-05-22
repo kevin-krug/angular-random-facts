@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, tap } from 'rxjs';
+import {
+    BehaviorSubject,
+    debounceTime,
+    distinctUntilChanged,
+    map,
+    tap
+} from 'rxjs';
 import { IFactData } from '../../fact/services/fact.service';
 import { FavoritesLocalStorageService } from './favorites-local-storage.service';
 
@@ -11,11 +17,7 @@ export type TFavoritesById = Record<string, IFactData>;
 export class FavoritesService {
     private favoritesByIdSubject = new BehaviorSubject<TFavoritesById>({});
     private searchFilterSubject = new BehaviorSubject<string | null>(null);
-    // debonce
-    //     .pipe(
-    //   debounceTime(300),
-    //   distinctUntilChanged()
-    // );
+
     private loadingSubject = new BehaviorSubject<boolean>(true);
     favoritesLoading$ = this.loadingSubject.asObservable();
 
@@ -33,7 +35,9 @@ export class FavoritesService {
     //     this.localStorageService.set(favorites);
     // });
 
-    searchFilter$ = this.searchFilterSubject.asObservable();
+    searchFilter$ = this.searchFilterSubject
+        .asObservable()
+        .pipe(debounceTime(300), distinctUntilChanged());
 
     constructor(private localStorageService: FavoritesLocalStorageService) {
         const savedFavorites = this.localStorageService.get();
