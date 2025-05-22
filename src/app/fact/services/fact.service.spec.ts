@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FactService, IFactData, TFactState } from './fact.service';
+import { FactService, IFactData, State, TFactState } from './fact.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { defer } from 'rxjs';
 
@@ -51,9 +51,9 @@ describe('FactService', () => {
                 emittedStates.push(state);
             },
             complete: () => {
-                expect(emittedStates[0]).toEqual({ state: 'loading' });
+                expect(emittedStates[0]).toEqual({ state: State.loading });
                 expect(emittedStates[1]).toEqual({
-                    state: 'loaded',
+                    state: State.loaded,
                     data: expectedFact
                 });
                 done();
@@ -79,13 +79,13 @@ describe('FactService', () => {
             },
             complete: () => {
                 expect(emittedStates.length).toBe(2);
-                expect(emittedStates[0]).toEqual({ state: 'loading' });
+                expect(emittedStates[0]).toEqual({ state: State.loading });
 
-                expect(emittedStates[1].state).toBe('error');
+                expect(emittedStates[1].state).toBe(State.error);
                 expect(
                     (
                         emittedStates[1] as {
-                            state: 'error';
+                            state: State.error;
                             error: HttpErrorResponse;
                         }
                     ).error.status

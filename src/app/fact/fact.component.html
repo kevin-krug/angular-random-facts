@@ -2,13 +2,13 @@
 <ng-container *ngIf="fact$ | async as fact">
     <div class="fact-text-wrapper">
       @switch (fact.factState) {
-        @case ('loading') {
+        @case (State.loading) {
           <app-loader></app-loader>
         }
-        @case ('error') {
+        @case (State.error) {
           <app-error errorMessage="Error: {{ fact.factError?.message }}"></app-error>
         }
-        @case ('loaded') {
+        @case (State.loaded) {
           <p>{{ fact.factData?.text }}</p>
         }
       }
@@ -17,7 +17,7 @@
     <div class="fact-ctas">
       <button (click)="refetchFact()">Fetch New Fact</button>
       <button
-        [disabled]="fact.factExistsAsFavorite || fact.factState === 'error'"
+        [disabled]="fact.factExistsAsFavorite || fact.factState === State.error"
         (click)="saveFact(fact.factData)">
         Add Fact to Favorites
       </button>

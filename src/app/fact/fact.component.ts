@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FactService, IFactData } from './services/fact.service';
+import { FactService, IFactData, State } from './services/fact.service';
 import {
     BehaviorSubject,
     combineLatest,
@@ -17,7 +17,7 @@ import { ErrorComponent } from '../shared/error/error.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
 interface IFact {
-    factState: string;
+    factState: State;
     factData: IFactData | null;
     factError: HttpErrorResponse | null;
     factExistsAsFavorite: boolean;
@@ -31,10 +31,13 @@ interface IFact {
 })
 export class FactComponent implements OnInit {
     private fetchTrigger$ = new BehaviorSubject<void>(undefined);
+    public State = State;
     factState$ = this.fetchTrigger$.pipe(
         switchMap(() => this.factService.fetchFact()),
         // wait 200ms before emitting loading state
-        debounce((state) => (state.state === 'loading' ? timer(200) : of(0)))
+        debounce((state) =>
+            state.state === State.loading ? timer(200) : of(0)
+        )
     );
 
     fact$!: Observable<IFact>;
@@ -53,11 +56,15 @@ export class FactComponent implements OnInit {
                 return {
                     factState: factState.state,
                     factData:
-                        factState.state === 'loaded' ? factState.data : null,
+                        factState.state === State.loaded
+                            ? factState.data
+                            : null,
                     factError:
-                        factState.state === 'error' ? factState.error : null,
+                        factState.state === State.error
+                            ? factState.error
+                            : null,
                     factExistsAsFavorite:
-                        factState.state === 'loaded'
+                        factState.state === State.loaded
                             ? !!favoritesById?.[factState.data.id]
                             : false
                 };
